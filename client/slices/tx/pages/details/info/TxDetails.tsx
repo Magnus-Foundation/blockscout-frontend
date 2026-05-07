@@ -576,6 +576,33 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
 
       <TxDetailsGasPrice gasPrice={ data.gas_price } gasToken={ data.celo?.gas_token } isLoading={ isLoading }/>
 
+      { data.fee_token && (
+        <>
+          <DetailedInfo.ItemLabel
+            hint="Magnus AA tx: ERC20-style token used to pay gas (instead of native)."
+            isLoading={ isLoading }
+          >
+            Fee token
+          </DetailedInfo.ItemLabel>
+          <DetailedInfo.ItemValue>
+            <AddressEntity
+              address={{
+                hash: data.fee_token,
+                is_contract: true,
+                is_verified: false,
+                ens_domain_name: null,
+                implementations: [],
+                name: null,
+                private_tags: [],
+                public_tags: [],
+                watchlist_names: [],
+              }}
+              isLoading={ isLoading }
+            />
+          </DetailedInfo.ItemValue>
+        </>
+      ) }
+
       <TxDetailsFeePerGas txFee={ data.fee.value } gasUsed={ data.gas_used } isLoading={ isLoading }/>
 
       { !config.UI.views.tx.additionalFields?.set_max_gas_limit && <TxDetailsGasUsage isLoading={ isLoading } data={ data }/> }
