@@ -505,7 +505,9 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         </>
       ) }
 
-      { !config.UI.views.tx.hiddenFields?.value && (
+      { /* Magnus: no native coin → "Value" in native units is meaningless.
+         Real transfers show under Tokens transferred. */ }
+      { !config.UI.views.tx.hiddenFields?.value && !data.fee_token && (
         <>
           <DetailedInfo.ItemLabel
             hint="Value sent in the native token (and USD) if applicable"
@@ -523,7 +525,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         </>
       ) }
 
-      <TxDetailsTxFee isLoading={ isLoading } data={ data }/>
+      { !data.fee_token && <TxDetailsTxFee isLoading={ isLoading } data={ data }/> }
 
       { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && data.operator_fee && (
         <>
@@ -574,7 +576,14 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         </>
       ) }
 
-      <TxDetailsGasPrice gasPrice={ data.gas_price } gasToken={ data.celo?.gas_token } isLoading={ isLoading }/>
+      { /* Magnus chains have no native coin — gas is paid in feeToken
+         (an MIP-20 token like mUSD/mEUR/mVND). Hide gas-price /
+         transaction-fee rows that would render native-wei amounts with
+         a misleading symbol. The real fee is shown in the "Tokens
+         transferred" section as the transfer to MipFeeManager. */ }
+      { !data.fee_token && (
+        <TxDetailsGasPrice gasPrice={ data.gas_price } gasToken={ data.celo?.gas_token } isLoading={ isLoading }/>
+      ) }
 
       { data.fee_token && (
         <>
@@ -593,7 +602,9 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         </>
       ) }
 
-      <TxDetailsFeePerGas txFee={ data.fee.value } gasUsed={ data.gas_used } isLoading={ isLoading }/>
+      { !data.fee_token && (
+        <TxDetailsFeePerGas txFee={ data.fee.value } gasUsed={ data.gas_used } isLoading={ isLoading }/>
+      ) }
 
       { !config.UI.views.tx.additionalFields?.set_max_gas_limit && <TxDetailsGasUsage isLoading={ isLoading } data={ data }/> }
 
@@ -697,7 +708,8 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
         </>
       ) }
 
-      <TxDetailsBurntFees data={ data } isLoading={ isLoading }/>
+      { /* Magnus: no native coin → no burnt fees in native units. */ }
+      { !data.fee_token && <TxDetailsBurntFees data={ data } isLoading={ isLoading }/> }
 
       { rollupFeature.isEnabled && rollupFeature.type === 'optimistic' && (
         <>
