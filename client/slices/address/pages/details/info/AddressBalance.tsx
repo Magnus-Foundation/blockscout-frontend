@@ -66,6 +66,17 @@ const AddressBalance = ({ data, isLoading }: Props) => {
     handler: handleNewCoinBalanceMessage,
   });
 
+  // Magnus chains report a sentinel native balance for every EOA:
+  // the decimal digits "4242" repeated 19 times (76 digits total).
+  // The native coin isn't used for fees on Magnus (gas is paid in
+  // feeToken / MIP-20 tokens), so this balance is meaningless and
+  // would be misleading to display.
+  const MAGNUS_NATIVE_SENTINEL =
+    '4242424242424242424242424242424242424242424242424242424242424242424242424242';
+  if (data.coin_balance === MAGNUS_NATIVE_SENTINEL) {
+    return null;
+  }
+
   return (
     <>
       <DetailedInfo.ItemLabel
