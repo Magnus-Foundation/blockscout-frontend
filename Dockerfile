@@ -54,7 +54,7 @@ RUN pnpm run build
 
 
 ### FEATURE REPORTER
-RUN cd ./deploy/tools/feature-reporter && pnpm run build
+RUN mkdir -p ./deploy/tools/feature-reporter/dist && echo "console.log(\"[magnus] feature-reporter stubbed\");" > ./deploy/tools/feature-reporter/dist/index.js
 
 
 ### ENV VARIABLES CHECKER
@@ -75,7 +75,7 @@ RUN cd ./deploy/tools/multichain-config-generator && pnpm run build
 RUN cd ./deploy/tools/essential-dapps-chains-config-generator && pnpm run build
 
 ### llms.txt GENERATOR
-RUN cd ./deploy/tools/llms-txt-generator && pnpm run build
+RUN mkdir -p ./deploy/tools/llms-txt-generator/dist && echo "console.log(\"[magnus] llms-txt-generator stubbed\");" > ./deploy/tools/llms-txt-generator/dist/index.js
 
 
 # *****************************
