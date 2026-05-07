@@ -51,4 +51,5 @@ export default yup.object({
         name: yup.string().required(),
       }).noUnknown(true)),
     NEXT_PUBLIC_IS_TESTNET: yup.boolean(),
+    NEXT_PUBLIC_NETWORK_TYPE: yup.string().oneOf([ 'devnet', 'testnet', 'mainnet' ]),
 });

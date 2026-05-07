@@ -11,7 +11,6 @@ import UserProfileDesktop from 'ui/snippets/user/UserProfileDesktop';
 
 import NavigationPromoBanner from '../promoBanner/NavigationPromoBanner';
 import RollupStageBadge from '../RollupStageBadge';
-import TestnetBadge from '../TestnetBadge';
 import NavLink from './NavLink';
 import NavLinkGroup from './NavLinkGroup';
 
@@ -41,7 +40,6 @@ const NavigationDesktop = () => {
         m="0 auto"
       >
         <NetworkLogo/>
-        <TestnetBadge ml={ 3 }/>
         <RollupStageBadge ml={ 3 }/>
         <chakra.nav ml="auto">
           <Flex as="ul" columnGap={ 2 } alignItems="center">

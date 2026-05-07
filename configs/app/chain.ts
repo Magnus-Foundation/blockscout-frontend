@@ -10,6 +10,17 @@ const DEFAULT_CURRENCY_DECIMALS = 18;
 
 const rollupType = getEnvValue('NEXT_PUBLIC_ROLLUP_TYPE') as RollupType;
 
+type NetworkType = 'devnet' | 'testnet' | 'mainnet';
+
+const networkType: NetworkType = (() => {
+  const value = getEnvValue('NEXT_PUBLIC_NETWORK_TYPE');
+  if (value === 'devnet' || value === 'testnet' || value === 'mainnet') {
+    return value;
+  }
+  // Back-compat: legacy NEXT_PUBLIC_IS_TESTNET=true → testnet, otherwise mainnet
+  return getEnvValue('NEXT_PUBLIC_IS_TESTNET') === 'true' ? 'testnet' : 'mainnet';
+})();
+
 const verificationType: NetworkVerificationType = (() => {
   if (rollupType === 'arbitrum') {
     return 'posting';
@@ -48,7 +59,8 @@ const chain = Object.freeze({
   tokenStandard: getEnvValue('NEXT_PUBLIC_NETWORK_TOKEN_STANDARD_NAME') || 'ERC',
   additionalTokenTypes: parseEnvJson<Array<AdditionalTokenType>>(getEnvValue('NEXT_PUBLIC_NETWORK_ADDITIONAL_TOKEN_TYPES')) || [],
   rpcUrls,
-  isTestnet: getEnvValue('NEXT_PUBLIC_IS_TESTNET') === 'true',
+  networkType,
+  isTestnet: networkType === 'testnet',
   verificationType,
 });
 

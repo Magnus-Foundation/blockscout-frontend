@@ -1,19 +1,55 @@
-import { chakra } from '@chakra-ui/react';
+import { chakra, Box } from '@chakra-ui/react';
 import React from 'react';
 
 import config from 'configs/app';
-import { Image } from 'toolkit/chakra/image';
 
 interface Props {
   className?: string;
 }
 
+const STYLES_BY_TYPE = {
+  devnet: {
+    label: 'DEVNET',
+    color: 'white',
+    bg: 'orange.500',
+  },
+  testnet: {
+    label: 'TESTNET',
+    color: 'white',
+    bg: 'red.400',
+  },
+} as const;
+
 const TestnetBadge = ({ className }: Props) => {
-  if (!config.chain.isTestnet) {
+  const { networkType } = config.chain;
+
+  if (networkType !== 'devnet' && networkType !== 'testnet') {
     return null;
   }
 
-  return <Image className={ className } src="/static/labels/testnet.svg" h="14px" w="37px" color="red.400"/>;
+  const style = STYLES_BY_TYPE[networkType];
+
+  return (
+    <Box
+      className={ className }
+      as="span"
+      display="inline-flex"
+      alignItems="center"
+      justifyContent="center"
+      px="4px"
+      h="11px"
+      borderRadius="2px"
+      fontSize="7px"
+      fontWeight="700"
+      letterSpacing="0.4px"
+      lineHeight="1"
+      color={ style.color }
+      bg={ style.bg }
+      textTransform="uppercase"
+    >
+      { style.label }
+    </Box>
+  );
 };
 
 export default React.memo(chakra(TestnetBadge));
