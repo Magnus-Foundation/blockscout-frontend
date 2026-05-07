@@ -586,17 +586,7 @@ const TxDetails = ({ data, isLoading, socketStatus, noTxActions }: Props) => {
           </DetailedInfo.ItemLabel>
           <DetailedInfo.ItemValue>
             <AddressEntity
-              address={{
-                hash: data.fee_token,
-                is_contract: true,
-                is_verified: false,
-                ens_domain_name: null,
-                implementations: [],
-                name: null,
-                private_tags: [],
-                public_tags: [],
-                watchlist_names: [],
-              }}
+              address={ data.fee_token }
               isLoading={ isLoading }
             />
           </DetailedInfo.ItemValue>

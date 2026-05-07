@@ -109,9 +109,11 @@ export interface Transaction extends
   has_error_in_internal_transactions: boolean | null;
   is_pending_update?: boolean;
   // Magnus chain: tx_type=118 (account-abstraction) tx pays gas in this
-  // ERC20-style token instead of the native asset. Lower-cased hex string,
-  // null for non-Magnus chains and pre-AA legacy txs.
-  fee_token?: string | null;
+  // ERC20-style token instead of the native asset. Backend joins the
+  // address_names table so this comes through with `name` populated for
+  // known tokens (mUSD/mVND/mEUR). Null on non-Magnus chains and pre-AA
+  // legacy txs.
+  fee_token?: AddressParam | null;
 };
 
 export interface TransactionsStats {
